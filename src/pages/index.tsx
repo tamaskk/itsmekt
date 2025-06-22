@@ -7,6 +7,7 @@ import MediaPlayer from '@/components/Examples/MediaPlayer';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import Loading from '../assets/dj-1-svgrepo-com.svg';
+import Image from 'next/image';
 
 // Extend Window interface to include scrollToContact
 declare global {
@@ -130,9 +131,11 @@ export default function Home() {
           fadeOut ? 'opacity-0' : 'opacity-100'
         }`}
       >
-        <img 
+        <Image 
           src={Loading.src} 
           alt="Loading" 
+          width={200}
+          height={200}
           className="w-1/2 h-1/2 animate-spin" 
           style={{ animationDuration: '3s' }}
         />

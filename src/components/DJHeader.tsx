@@ -40,8 +40,8 @@ const DJHeader: React.FC<DJHeaderProps> = ({ onContactClick }) => {
 
   const scrollToContact = () => {
     // Use the global scroll function from the main page
-    if ((window as any).scrollToContact) {
-      (window as any).scrollToContact();
+    if (typeof window !== 'undefined' && window.scrollToContact) {
+      window.scrollToContact();
     }
   };
 

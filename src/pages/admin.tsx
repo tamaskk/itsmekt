@@ -90,6 +90,19 @@ const AdminPage = () => {
     { id: 'messages', label: 'Contact Messages', icon: '💬' }
   ];
 
+  const fetchEverything = useCallback(async () => {
+    await fetchEvents();
+    await fetchSystemSettings();
+    await fetchMessages();
+  }, []);
+
+  // Fetch events from API on component mount
+  useEffect(() => {
+    if (session) {
+      fetchEverything();
+    }
+  }, [session, fetchEverything]);
+
   // Redirect if not authenticated
   useEffect(() => {
     if (status === 'loading') return; // Still loading
@@ -112,19 +125,6 @@ const AdminPage = () => {
     return null;
   }
 
-  // Fetch events from API on component mount
-  useEffect(() => {
-    if (session) {
-      fetchEverything();
-    }
-  }, [session]);
-
-  const fetchEverything = useCallback(async () => {
-    await fetchEvents();
-    await fetchSystemSettings();
-    await fetchMessages();
-  }, []);
-  
   const fetchMessages = async () => {
     try {
       setMessagesLoading(true);

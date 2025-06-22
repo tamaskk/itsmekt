@@ -87,7 +87,7 @@ const Contact = () => {
         {/* Success/Error Messages */}
         {submitStatus === 'success' && (
           <div className="max-w-md mx-auto mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-md">
-            <p className="text-center">Message sent successfully! I'll get back to you soon.</p>
+            <p className="text-center">Message sent successfully! I&apos;ll get back to you soon.</p>
           </div>
         )}
 

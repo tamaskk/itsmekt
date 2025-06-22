@@ -8,12 +8,6 @@ interface ScreenComponentProps {
 }
 
 const ScreenComponent: React.FC<ScreenComponentProps> = ({ isScrolling, windowHeight, screenOffset, children }) => {
-  const [component, setComponent] = useState<React.ReactNode>(children);
-
-  useEffect(() => {
-    setComponent(children);
-  }, [children]);
-
   return (
     <div 
     className={`fixed inset-0 z-10 transition-transform ${
