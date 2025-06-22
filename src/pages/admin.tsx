@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ref, uploadBytesResumable, deleteObject } from 'firebase/storage';
 import { storage } from '@/db/firebase';
@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { useSession, signOut } from 'next-auth/react';
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
+import Image from 'next/image';
 
 interface Event {
   _id: string;
@@ -113,14 +114,16 @@ const AdminPage = () => {
 
   // Fetch events from API on component mount
   useEffect(() => {
-    fetchEverything();
-  }, []);
+    if (session) {
+      fetchEverything();
+    }
+  }, [session]);
 
-  const fetchEverything = async () => {
+  const fetchEverything = useCallback(async () => {
     await fetchEvents();
     await fetchSystemSettings();
     await fetchMessages();
-  };
+  }, []);
   
   const fetchMessages = async () => {
     try {
@@ -222,7 +225,7 @@ const AdminPage = () => {
   const handleSaveEvent = async () => {
     if (editingEvent) {
       // Update existing event
-      let updatedEventData = { ...editFormData, _id: editingEvent._id };
+      const updatedEventData = { ...editFormData, _id: editingEvent._id };
       
       // If there's a new image file, delete the old one and upload the new one
       if (editFormData.image instanceof File) {
@@ -263,8 +266,6 @@ const AdminPage = () => {
         throw new Error("Failed to update event");
       }
 
-      const data = await response.json();
-      
       setEvents(events.map(event => 
         event._id === editingEvent._id 
           ? updatedEventData
@@ -474,8 +475,7 @@ const AdminPage = () => {
         throw new Error('Failed to save settings');
       }
 
-      const data = await response.json();
-      console.log('Settings saved successfully:', data.message);
+      console.log('Settings saved successfully');
       
       // Show success message (you could add a toast notification here)
       alert('Settings saved successfully!');
@@ -991,9 +991,11 @@ const AdminPage = () => {
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Image Preview
                     </label>
-                    <img
+                    <Image
                       src={typeof imagePreview === 'string' ? imagePreview : URL.createObjectURL(imagePreview as File)}
                       alt="Event preview"
+                      width={300}
+                      height={150}
                       className="w-full h-32 object-cover rounded-lg border"
                       onError={(e) => {
                         (e.target as HTMLImageElement).style.display = 'none';

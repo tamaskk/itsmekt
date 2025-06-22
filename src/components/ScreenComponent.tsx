@@ -7,8 +7,6 @@ interface ScreenComponentProps {
   children: React.ReactNode;
 }
 
-const text = "Dummy text ";
-
 const ScreenComponent: React.FC<ScreenComponentProps> = ({ isScrolling, windowHeight, screenOffset, children }) => {
   const [component, setComponent] = useState<React.ReactNode>(children);
 

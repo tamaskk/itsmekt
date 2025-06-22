@@ -1,5 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 
 const RunningText = ({
   name,
@@ -54,10 +55,12 @@ const RunningText = ({
         <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 shadow-2xl max-w-md w-full">
           {/* Event Image */}
           <div className="mb-6">
-            <img 
-              className='w-full h-48 object-cover rounded-xl shadow-lg' 
-              alt="Event" 
+            <Image
               src={image}
+              alt="Event"
+              width={300}
+              height={150}
+              className="w-full h-48 object-cover rounded-xl shadow-lg"
             />
           </div>
           

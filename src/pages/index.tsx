@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import ScreenComponent from '../components/ScreenComponent';
 import RunningText from '../components/Examples/RunningText';
 import DJHeader from '../components/DJHeader';
@@ -39,14 +39,12 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [fadeOut, setFadeOut] = useState(false);
 
-  // Scroll to contact function, adjusted to show full contact section
-  const scrollToContact = () => {
-    const targetScrollY = windowHeight * events.length + 2.3; // Slightly overscroll to ensure full visibility
-    window.scrollTo({
-      top: targetScrollY,
-      behavior: 'smooth'
-    });
-  };
+  const scrollToContact = useCallback(() => {
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, []);
 
   // Make scrollToContact available globally
   useEffect(() => {
@@ -54,7 +52,7 @@ export default function Home() {
     return () => {
       delete window.scrollToContact;
     };
-  }, [windowHeight]);
+  }, [scrollToContact]);
 
   useEffect(() => {
     try {
@@ -121,12 +119,6 @@ export default function Home() {
   }, []);
 
   // Calculate overlay positions
-  // const screen10Offset = Math.max(0, Math.min(windowHeight, scrollY - windowHeight * 1));
-  // const screen20Offset = Math.max(0, Math.min(windowHeight, scrollY - windowHeight * 2));
-  // const screen30Offset = Math.max(0, Math.min(windowHeight, scrollY - windowHeight * 3));
-  // const screen40Offset = Math.max(0, Math.min(windowHeight, scrollY - windowHeight * 4));
-
-  // I want to generate these offsets dynamically based on the screenAmount
   const screenOffsets = Array.from({ length: screenAmount }, (_, index) => {
     return Math.max(0, Math.min(windowHeight, scrollY - windowHeight * (index + 0.5)));
   });
@@ -157,7 +149,7 @@ export default function Home() {
       <div style={{ height: `${windowHeight * (screenAmount + 0.5)}px` }}>
         {/* First Screen - DJ Header */}
         <div className="fixed inset-0 z-0">
-          <DJHeader />
+          <DJHeader onContactClick={scrollToContact} />
         </div>
 
         {events.map((event, index) => (

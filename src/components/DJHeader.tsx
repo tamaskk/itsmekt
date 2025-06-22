@@ -1,7 +1,43 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import bg from '../assets/Tamás Krisztián Kálmán_image_1.jpeg'
 
-const DJHeader = () => {
+interface DJHeaderProps {
+  onContactClick: () => void;
+}
+
+const DJHeader: React.FC<DJHeaderProps> = ({ onContactClick }) => {
+  const [currentTime, setCurrentTime] = useState<string>('');
+  const [currentDate, setCurrentDate] = useState<string>('');
+
+  useEffect(() => {
+    const updateDateTime = () => {
+      const now = new Date();
+      
+      // Format time
+      const timeOptions: Intl.DateTimeFormatOptions = { 
+        hour: '2-digit', 
+        minute: '2-digit',
+        hour12: false 
+      };
+      setCurrentTime(now.toLocaleTimeString('en-US', timeOptions));
+      
+      // Format date
+      const dateOptions: Intl.DateTimeFormatOptions = { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      };
+      setCurrentDate(now.toLocaleDateString('en-US', dateOptions));
+    };
+
+    updateDateTime();
+    const interval = setInterval(updateDateTime, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   const scrollToContact = () => {
     // Use the global scroll function from the main page
     if ((window as any).scrollToContact) {
@@ -33,7 +69,7 @@ const DJHeader = () => {
               {/* <svg className="w-28 h-28 text-gray-800" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
               </svg> */}
-              <img src={bg.src} alt="DJ" className="w-full h-full object-cover" />
+              <Image src={bg.src} alt="DJ" className="w-full h-full object-cover" width={224} height={224} />
             </div>
           </div>
         </div>

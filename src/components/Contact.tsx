@@ -79,9 +79,8 @@ const Contact = () => {
               fontStyle: "normal",
           }}
           >Contact</h1>
-          <p className="text-lg text-center mt-4 font-thin"
-          >
-            Get in touch with me to discuss your next project or event.
+          <p className="text-gray-600 mb-6">
+            Don&apos;t hesitate to reach out if you have any questions or would like to discuss your event.
           </p>
         </div>
 
