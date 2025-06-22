@@ -30,14 +30,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Delete image from Firebase if it exists
     if (event.image && typeof event.image === 'string') {
       try {
-        // Extract the path from the Firebase URL
-        const url = new URL(event.image);
-        const path = decodeURIComponent(url.pathname.split('/o/')[1]?.split('?')[0] || '');
-        
-        if (path) {
-          const imageRef = ref(storage, path);
-          await deleteObject(imageRef);
-          console.log('Image deleted from Firebase');
+        if (!storage) {
+          console.warn('Firebase storage is not available');
+        } else {
+          // Extract the path from the Firebase URL
+          const url = new URL(event.image);
+          const path = decodeURIComponent(url.pathname.split('/o/')[1]?.split('?')[0] || '');
+          
+          if (path) {
+            const imageRef = ref(storage, path);
+            await deleteObject(imageRef);
+            console.log('Image deleted from Firebase');
+          }
         }
       } catch (error) {
         console.error('Error deleting image from Firebase:', error);

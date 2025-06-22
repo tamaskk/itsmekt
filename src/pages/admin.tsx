@@ -229,6 +229,10 @@ const AdminPage = () => {
       
       // If there's a new image file, delete the old one and upload the new one
       if (editFormData.image instanceof File) {
+        if (!storage) {
+          throw new Error('Firebase storage is not available. Please check your Firebase configuration.');
+        }
+        
         // Delete old image from Firebase if it exists
         if (typeof editingEvent.image === 'string' && editingEvent.image) {
           await deleteImageFromFirebase(editingEvent.image);
@@ -278,6 +282,10 @@ const AdminPage = () => {
       // First upload image to firebase storage if it's a File
       let imageUrl = '';
       if (editFormData.image instanceof File) {
+          if (!storage) {
+            throw new Error('Firebase storage is not available. Please check your Firebase configuration.');
+          }
+          
           const storageRef = ref(storage, `events/${editFormData.name}_${Date.now()}.jpg`);
           const uploadTask = uploadBytesResumable(storageRef, editFormData.image);
           
@@ -376,6 +384,11 @@ const AdminPage = () => {
 
   const deleteImageFromFirebase = async (imageUrl: string) => {
     try {
+      if (!storage) {
+        console.warn('Firebase storage is not available');
+        return;
+      }
+      
       // Extract the path from the Firebase URL
       const url = new URL(imageUrl);
       const path = decodeURIComponent(url.pathname.split('/o/')[1]?.split('?')[0] || '');
