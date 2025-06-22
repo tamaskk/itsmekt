@@ -1,38 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import bg from '../assets/Tamás Krisztián Kálmán_image_1.jpeg'
 
 const DJHeader: React.FC = () => {
-  const [currentTime, setCurrentTime] = useState<string>('');
-  const [currentDate, setCurrentDate] = useState<string>('');
-
-  useEffect(() => {
-    const updateDateTime = () => {
-      const now = new Date();
-      
-      // Format time
-      const timeOptions: Intl.DateTimeFormatOptions = { 
-        hour: '2-digit', 
-        minute: '2-digit',
-        hour12: false 
-      };
-      setCurrentTime(now.toLocaleTimeString('en-US', timeOptions));
-      
-      // Format date
-      const dateOptions: Intl.DateTimeFormatOptions = { 
-        weekday: 'long', 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric' 
-      };
-      setCurrentDate(now.toLocaleDateString('en-US', dateOptions));
-    };
-
-    updateDateTime();
-    const interval = setInterval(updateDateTime, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <div className="w-full h-screen bg-gradient-to-bl pt-10! from-blue-100 via-white to-blue-100 flex flex-col items-center justify-start relative overflow-hidden">
