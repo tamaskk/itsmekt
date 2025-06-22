@@ -6,6 +6,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
+  // Check if MongoDB URI is available
+  if (!process.env.MONGODB_URI) {
+    console.error('MONGODB_URI not available for get-events');
+    return res.status(500).json({ message: 'Database configuration error' });
+  }
+
   try {
     const client = await connectMongo();
     const db = client.db();
@@ -54,6 +60,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(200).json({ events, systemSettings });
   } catch (error) {
     console.error('Error fetching events:', error);
-    res.status(500).json({ message: 'Failed to fetch events' });
+    res.status(500).json({ message: 'Failed to fetch events', error: error instanceof Error ? error.message : 'Unknown error' });
   }
 } 

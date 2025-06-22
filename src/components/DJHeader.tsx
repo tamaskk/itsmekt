@@ -15,7 +15,7 @@ const DJHeader: React.FC = () => {
         <div className="flex items-center space-x-4">
           <div className="relative w-16 h-16">
             <Image
-              src="/dj-1-svgrepo-com.svg"
+              src="/assets/dj-1-svgrepo-com.svg"
               alt="DJ Logo"
               width={64}
               height={64}

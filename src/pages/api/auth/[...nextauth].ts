@@ -3,6 +3,15 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 import { connectMongo } from '@/db/mongodb';
 
+// Check for required environment variables
+if (!process.env.NEXTAUTH_SECRET) {
+  console.error('NEXTAUTH_SECRET is not defined in environment variables');
+}
+
+if (!process.env.MONGODB_URI) {
+  console.error('MONGODB_URI is not defined in environment variables');
+}
+
 export default NextAuth({
   providers: [
     CredentialsProvider({
@@ -13,6 +22,12 @@ export default NextAuth({
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
+          return null;
+        }
+
+        // Check if MongoDB URI is available
+        if (!process.env.MONGODB_URI) {
+          console.error('MONGODB_URI not available for authentication');
           return null;
         }
 
@@ -80,5 +95,6 @@ export default NextAuth({
     signIn: '/login',
     error: '/login',
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET || 'fallback-secret-for-development',
+  debug: process.env.NODE_ENV === 'development',
 }); 

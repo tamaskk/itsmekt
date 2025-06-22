@@ -6,7 +6,6 @@ import NiceText from '../components/Examples/NiceText';
 import MediaPlayer from '@/components/Examples/MediaPlayer';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
-import Loading from '../assets/dj-1-svgrepo-com.svg';
 import Image from 'next/image';
 
 // Extend Window interface to include scrollToContact
@@ -132,7 +131,7 @@ export default function Home() {
         }`}
       >
         <Image 
-          src={Loading.src} 
+          src="/assets/dj-1-svgrepo-com.svg" 
           alt="Loading" 
           width={200}
           height={200}
