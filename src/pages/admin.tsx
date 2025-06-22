@@ -1044,7 +1044,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   // Check if user has admin role
-  if (session.user?.role !== 'admin') {
+  if ((session.user as any)?.role !== 'admin') {
     return {
       redirect: {
         destination: '/login',
