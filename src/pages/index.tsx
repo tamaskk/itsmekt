@@ -152,7 +152,7 @@ export default function Home() {
       <div style={{ height: `${windowHeight * (screenAmount + 0.5)}px` }}>
         {/* First Screen - DJ Header */}
         <div className="fixed inset-0 z-0">
-          <DJHeader onContactClick={scrollToContact} />
+          <DJHeader />
         </div>
 
         {events.map((event, index) => (
